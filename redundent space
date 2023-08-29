@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+int main() {
+    char ch, buffer[15], operators[] = "+-*/%=";
+    FILE *fp = fopen("pallavi2.txt", "r");
+    if (fp == NULL) {
+        printf("Error opening the file\n");
+        exit(1);
+    }
+
+    while ((ch = fgetc(fp)) != EOF) {
+        if (strchr(operators, ch))
+            printf("%c is operator\n", ch);
+        else if (isalnum(ch))
+            buffer[strlen(buffer)] = ch;
+        else if ((ch == ' ' || ch == '\n') && strlen(buffer) > 0) {
+            buffer[strlen(buffer)] = '\0';
+            if (strcmp(buffer, "printf") == 0)
+                printf("%s is keyword\n", buffer);
+            else
+                printf("%s is identifier\n", buffer);
+            buffer[0] = '\0';
+        }
+    }
+
+    fclose(fp);
+    return 0;
+}
